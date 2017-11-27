@@ -1,0 +1,32 @@
+img {
+    border: 2px solid #ddd; /* Gray border */
+    border-radius: 5px;  /* Rounded border */
+    padding: 5px; /* Some padding */
+    width: 35%; /* Set a small width */
+    height: 40%;
+}
+img:hover {
+    box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+}
+
+.low-risk{
+	border: 5px solid green;
+}
+
+.medium-risk{
+	border:5px solid orange;
+}
+
+.high-risk{
+	border:5px solid red;
+}
+
+hr{
+	margin:7px 0px;
+}
+
+.modal-body img{
+	width:100%;
+	height:80%;
+	
+}
