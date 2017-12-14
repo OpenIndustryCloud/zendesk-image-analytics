@@ -1,6 +1,7 @@
 var imageCount = 0;
 var arrOfResults = [];
 var imagePresent = false; 
+var imageUrlFound= false;
 
 $(function() {
   var client = ZAFClient.init();
@@ -9,8 +10,9 @@ $(function() {
   client.get('ticket.customField:custom_field_114101729171').then(
 	function(data) {	
 	imageCount++;	
-		if(data['ticket.customField:custom_field_114101729171']!=""){			
+		if(data['ticket.customField:custom_field_114101729171']!="" && data['ticket.customField:custom_field_114101729171']!=null){			
 			var imagePath = data['ticket.customField:custom_field_114101729171'];
+			imageUrlFound = true;
 			if(imagePath != null){
 				var indexOne  = imagePath.indexOf("/o/");
 				var indexTwo  = imagePath.indexOf("?generation");
@@ -24,8 +26,9 @@ $(function() {
   client.get('ticket.customField:custom_field_114101655912').then(
 	function(data) {
 	imageCount++;		
-		if(data['ticket.customField:custom_field_114101655912']!="" && data['ticket.customField:custom_field_114101655912']!="null"){			
+		if(data['ticket.customField:custom_field_114101655912']!="" && data['ticket.customField:custom_field_114101655912']!=null){			
 			var imagePath = data['ticket.customField:custom_field_114101655912'];
+			imageUrlFound = true;
 			if(imagePath != null){
 				var indexOne  = imagePath.indexOf("/o/");
 				var indexTwo  = imagePath.indexOf("?generation");
@@ -39,8 +42,9 @@ $(function() {
   client.get('ticket.customField:custom_field_114101729331').then(
 	function(data) {	
 	imageCount++;	
-		if(data['ticket.customField:custom_field_114101729331']!=""){			
+		if(data['ticket.customField:custom_field_114101729331']!="" && data['ticket.customField:custom_field_114101729331']!=null){			
 			var imagePath = data['ticket.customField:custom_field_114101729331'];
+			imageUrlFound = true;
 			if(imagePath != null){
 				var indexOne  = imagePath.indexOf("/o/");
 				var indexTwo  = imagePath.indexOf("?generation");
@@ -54,8 +58,9 @@ $(function() {
   client.get('ticket.customField:custom_field_114101655952').then(
 	function(data) {	
 	imageCount++;	
-		if(data['ticket.customField:custom_field_114101655952']!=""){			
+		if(data['ticket.customField:custom_field_114101655952']!="" && data['ticket.customField:custom_field_114101655952']!=null){			
 			var imagePath = data['ticket.customField:custom_field_114101655952'];
+			imageUrlFound = true;
 			if(imagePath != null){
 				var indexOne  = imagePath.indexOf("/o/");
 				var indexTwo  = imagePath.indexOf("?generation");
@@ -66,6 +71,9 @@ $(function() {
 	}
   );
   
+if(!imageUrlFound){
+	  setTimeout(function(){sendData("",""); }, 3000);
+  }
   
   
   
@@ -135,7 +143,7 @@ function showImageData(imageName, client){
 	  ]
 	}
 	var settings = {
-		url: 'https://vision.googleapis.com/v1/images:annotate?key=YOURANNOTATEKEYHERE',
+		url: 'https://vision.googleapis.com/v1/images:annotate?key=AIzaSyBbdLJcEoSgXvM7dsrv409bBr3n1oKdVOo',
 		data: JSON.stringify(parameters),
 		type: 'POST',
 		contentType: 'application/json'
@@ -148,6 +156,15 @@ function showImageData(imageName, client){
 }
 
 function sendData(data, imageName){
+	if(data=="" && imageName==""){
+		var requester_data = {
+			'arrOfResults' : arrOfResults
+		};		
+		var source = $("#requester-template").html();
+		var template = Handlebars.compile(source);
+		var html = template(requester_data);
+		$("#content").html(html);
+	}else{
 	var isHighRisk= false, isMediumRisk= false;isLowRisk= false;
 	//var textValue="";
 	
@@ -167,12 +184,13 @@ function sendData(data, imageName){
 		
 	var imagePath = "https://storage.googleapis.com/artifacts-image/" + imageName;
 	
-				/*EXIF.getData(imagePath, function() {
+			/*	EXIF.getData(imagePath, function() {
                 /*var make = EXIF.getTag(this, "Make"),
                     model = EXIF.getTag(this, "Model");
                 console.log("I was taken by a " + make + " " + model);
-				console.log(EXIF.pretty(imagePath));		
-				});*/
+				console.log(EXIF.pretty(imagePath));				
+				});
+				*/
 	
 	var data = {
 		'imagePath' : imagePath,
@@ -190,4 +208,5 @@ function sendData(data, imageName){
 		var html = template(requester_data);
 		$("#content").html(html);
 	}
+}
 }
