@@ -1,12 +1,15 @@
+//Global variables initialized
 var imageCount = 0;
 var arrOfResults = [];
 var imagePresent = false; 
 var imageUrlFound= false;
 
 $(function() {
+  //Initialize ZAFClient
   var client = ZAFClient.init();
   client.invoke('resize', { width: '100%', height: '100%' });
   
+  //Get image path from zendesk ticket fields (4nos)
   client.get('ticket.customField:custom_field_114101729171').then(
 	function(data) {	
 	imageCount++;	
@@ -76,7 +79,7 @@ if(!imageUrlFound){
   }
   
   
-  
+//	Open image in a modal window on click of individual images  
 $(document).on('click',"#pop0" ,function(){
 	var img = $(this).find("img");
     var imageSrc = img.first().attr("src");
@@ -122,6 +125,7 @@ $(document).on('click',"#pop3" ,function(){
   
 });
 
+//Methof which actuay calls the vision API
 function showImageData(imageName, client){
 	var parameters = {
 	  "requests": [
@@ -154,7 +158,7 @@ function showImageData(imageName, client){
 		}
 	)
 }
-
+//Method return back the data to the iframe.html
 function sendData(data, imageName){
 	if(data=="" && imageName==""){
 		var requester_data = {
@@ -166,7 +170,6 @@ function sendData(data, imageName){
 		$("#content").html(html);
 	}else{
 	var isHighRisk= false, isMediumRisk= false;isLowRisk= false;
-	//var textValue="";
 	
 	if(data.responses[0].webDetection.fullMatchingImages!=null && data.responses[0].webDetection.fullMatchingImages !="undefined"){
 		if(data.responses[0].webDetection.fullMatchingImages.length>0){
@@ -180,17 +183,8 @@ function sendData(data, imageName){
 	}else{
 		isLowRisk = true;
 	}	
-	//textValue= data.responses[0].textAnnotations.description;
-		
+			
 	var imagePath = "https://storage.googleapis.com/artifacts-image/" + imageName;
-	
-			/*	EXIF.getData(imagePath, function() {
-                /*var make = EXIF.getTag(this, "Make"),
-                    model = EXIF.getTag(this, "Model");
-                console.log("I was taken by a " + make + " " + model);
-				console.log(EXIF.pretty(imagePath));				
-				});
-				*/
 	
 	var data = {
 		'imagePath' : imagePath,

@@ -1,6 +1,6 @@
 # Google Vision API for Zendesk
 
-Google Vision API can perform Web Detection directly on an image file located in Google Cloud Storage. This API reads the image path from zendesk ticket fields detects the images over the internet.
+Google Vision API can perform Web Detection directly on an image file located in Google Cloud Storage. This API reads the image path from zendesk ticket fields and detects the images over the internet.
 
 ## Cloud Vision API Sample Input/Output
 
